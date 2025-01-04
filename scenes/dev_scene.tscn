@@ -1,3 +1,12 @@
-[gd_scene format=3 uid="uid://bkxl30vuvb0a6"]
+[gd_scene load_steps=3 format=3 uid="uid://bkxl30vuvb0a6"]
+
+[ext_resource type="PackedScene" uid="uid://4wnt76inseb1" path="res://nodes/player.tscn" id="1_sv5t6"]
+[ext_resource type="PackedScene" uid="uid://08y4jcr3lk7e" path="res://nodes/player_sprite_nodes/Ceaser.tscn" id="2_hb3b6"]
 
 [node name="DevScene" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_sv5t6")]
+
+[node name="Sprite" parent="Player" instance=ExtResource("2_hb3b6")]
+animation = &"idle"
+frame = 0
