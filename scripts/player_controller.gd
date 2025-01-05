@@ -1,13 +1,13 @@
 extends CharacterBody2D
 
 #Чтобы перевести скорость из сабпикселей/кадр в пиксели/секунда умножь числа на 15/4
-@export var max_walk_speed: float = 85
-@export var walk_accel: float = 225.5
-@export var walk_deccel: float = 250.5
+@export var max_walk_speed: float = 105
+@export var walk_accel: float = 210.5
+@export var walk_deccel: float = 210.5
 
 @export var max_run_speed: float = 200
 @export var run_accel: float = 125.5
-@export var run_deccel: float = 265.5
+@export var run_deccel: float = 165
 
 @export var max_duck_speed: float = 90
 @export var duck_accel: float = 0
