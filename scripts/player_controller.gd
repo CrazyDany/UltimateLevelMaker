@@ -1,11 +1,11 @@
 extends CharacterBody2D
 
 #Чтобы перевести скорость из сабпикселей/кадр в пиксели/секунда умножь числа на 15/4
-@export var max_walk_speed: float = 52.5
+@export var max_walk_speed: float = 85
 @export var walk_accel: float = 225.5
 @export var walk_deccel: float = 250.5
 
-@export var max_run_speed: float = 120
+@export var max_run_speed: float = 140
 @export var run_accel: float = 165.5
 @export var run_deccel: float = 265.5
 
@@ -17,6 +17,10 @@ extends CharacterBody2D
 #Иницилизация дочерних нод
 @onready var sprite = $Sprite
 @onready var collision = $CollisionShape2D
+@onready var anim:AnimationPlayer = sprite.get_child(0)
+
+#func _ready():
+	#print(anim)
 
 var is_running = false
 
@@ -60,23 +64,23 @@ func _physics_process(delta: float) -> void:
 #	АНИМАЦИИ
 	if in_air:
 		if velocity.y > 0:
-			handle_set_animation("fall")
-		else:
-			handle_set_animation("jump")
+			handle_set_animation("Fall")
+		elif not(anim.current_animation == "Fall"):
+			handle_set_animation("Jump")
 	else:
 		if not is_ducking:
 			if is_moving:
 				if (Input.is_action_pressed("Right") and velocity.x < 0) or (Input.is_action_pressed("Left") and velocity.x > 0):
-					handle_set_animation("skid")
+					handle_set_animation("Skid")
 				else:
 					if is_running:
-						handle_set_animation("run")
+						handle_set_animation("Run")
 					else:
-						handle_set_animation("walk")
+						handle_set_animation("Walk")
 			else:
-				handle_set_animation("idle")
+				handle_set_animation("Idle")
 		else:
-			handle_set_animation("duck")
+			handle_set_animation("Duck")
 			
 #	ЙОУ КРУТЫЕ ПОВОРОТЫ СПРАЙТА
 	if velocity.x < 0 and not sprite.flip_h:
@@ -111,7 +115,7 @@ func deccelerate(deccel: float, min_speed: float, delta: float):
 			velocity.x = min_speed
 			
 func handle_set_animation(name:StringName):
-	if sprite.animation == name:
+	if anim.current_animation == name:
 		return
 	else:
-		sprite.animation = name
+		anim.play(name)
