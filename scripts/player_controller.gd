@@ -1,101 +1,117 @@
 extends CharacterBody2D
 
-# Чтобы перевести скорость из сабпикселей/кадр в пиксели/секунда умножь числа на 15/4
+#Чтобы перевести скорость из сабпикселей/кадр в пиксели/секунда умножь числа на 15/4
 @export var max_walk_speed: float = 52.5
-@export var max_run_speed: float = 1200
-@export var max_sprint_speed: float = 112.5
-@export var acceleration: float = 162.5
-@export var deceleration: float = 205.5
-@export var slidding_decel: float = 50.5
-@export var jump_strength: float = 56.25
+@export var walk_accel: float = 225.5
+@export var walk_deccel: float = 250.5
 
-# Инициализация дополнительных нод
+@export var max_run_speed: float = 120
+@export var run_accel: float = 165.5
+@export var run_deccel: float = 265.5
+
+@export var max_duck_speed: float = 90
+@export var duck_accel: float = 0
+@export var duck_dessel: float = 65
+
+@export var jump_strenth: float = 275
+#Иницилизация дочерних нод
 @onready var sprite = $Sprite
+@onready var collision = $CollisionShape2D
+
+var is_running = false
 
 func _physics_process(delta: float) -> void:
-	# Декопозинг переменных состояния игрока для более читабельного кода
-	var is_slid: bool = Input.is_action_pressed("Down")
-	var is_run: bool = Input.is_action_pressed("Run")
-	velocity.y += get_gravity().y * delta   
+	var input_vector: Vector2 = Vector2.ZERO
+	var is_running:float = Input.is_action_pressed("Run")
+	var is_moving = Input.is_action_pressed("Left") or Input.is_action_pressed("Right")
+	var in_air = not(is_on_floor())
+	var is_ducking:bool = Input.is_action_pressed("Down")
 
-	var input_vector = Vector2.ZERO
+	if Input.is_action_pressed("Right"):
+		input_vector.x += 1
+	if Input.is_action_pressed("Left"):
+		input_vector.x -= 1
 
-	if not is_slid:
-		if Input.is_action_pressed("Left"):
-			input_vector.x -= 1
-		elif Input.is_action_pressed("Right"):
-			input_vector.x += 1
-		elif Input.is_action_pressed("Up") and is_on_floor() and velocity.x == 0:
-			sprite.animation = "look_up"
-
-	input_vector = input_vector.normalized()
-
-	var real_max_speed: float
-	if is_run:
-		real_max_speed = max_run_speed
+	if not is_ducking:
+		if input_vector.x != 0:
+			if is_running:
+				accelerate(input_vector.x * run_accel, max_run_speed, delta)
+			else:
+				accelerate(input_vector.x * walk_accel, max_walk_speed, delta)
+		else:
+			if is_running:
+				deccelerate(run_deccel, 0, delta)
+			else:
+				deccelerate(walk_deccel, 0, delta)
 	else:
-		real_max_speed = max_walk_speed
-	
-	if is_on_floor():
-		velocity.x += input_vector.x * acceleration * delta
+		deccelerate(duck_dessel, 0, delta)
+			
+#	DO YOU BELIVE IN GRAVITY
+	if not(is_on_floor()):
+		velocity.y += get_gravity().y
 		
-		# Ограничение скорости
-		if abs(velocity.x) > real_max_speed:
-			if velocity.x > 0:
-				velocity.x -= deceleration * delta
-			else:
-				velocity.x += deceleration * delta
+#	Прыжок
+	if not is_ducking:
+		if Input.is_action_just_pressed("Jump") and is_on_floor():
+			velocity.y = -jump_strenth
 
-			velocity.x = clamp(velocity.x, -real_max_speed, real_max_speed)
-		else:
-			velocity.x = clamp(velocity.x, -real_max_speed, real_max_speed)
-
-		# Обработка прыжка
-		if Input.is_action_just_pressed("Jump"):
-			velocity.y -= ((jump_strength * 175) * delta) * clamp(abs(velocity.x) / 100, 1, 1.5)
-
-	if input_vector.x == 0 and is_on_floor():
-		# Проверка с каким замедлением замедлять игрока
-		var real_decel: float
-		if is_slid:
-			real_decel = slidding_decel
-		else:
-			real_decel = deceleration
-
-		if velocity.x > 0:
-			velocity.x -= real_decel * delta
-			if velocity.x < 0:
-				velocity.x = 0
-		elif velocity.x < 0:
-			velocity.x += real_decel * delta
-			if velocity.x > 0:
-				velocity.x = 0
-	if Input.is_action_just_released("Jump") && velocity.y < -10:
-		velocity.y = -25
-
-	# Логика анимаций
-	if is_on_floor():
-		if is_slid:
-			sprite.animation = "duck"
-		else:
-			if velocity.x != 0:
-				sprite.flip_h = velocity.x < 0
-				
-				if (Input.is_action_pressed("Right") and velocity.x < 0) or (Input.is_action_pressed("Left") and velocity.x > 0):
-					sprite.animation = "skid"
-				else:
-					if is_run:
-						sprite.animation = "run"
-					else:
-						sprite.animation = "walk"
-			else:
-				if not(Input.is_action_pressed("Up")):
-					sprite.animation = "idle"
-	else:
-		if velocity.y < 1:
-			sprite.animation = "jump"
-		else:
-			sprite.animation = "fall"
-
-	# Движение
 	move_and_slide()
+	
+#	АНИМАЦИИ
+	if in_air:
+		if velocity.y > 0:
+			handle_set_animation("fall")
+		else:
+			handle_set_animation("jump")
+	else:
+		if not is_ducking:
+			if is_moving:
+				if (Input.is_action_pressed("Right") and velocity.x < 0) or (Input.is_action_pressed("Left") and velocity.x > 0):
+					handle_set_animation("skid")
+				else:
+					if is_running:
+						handle_set_animation("run")
+					else:
+						handle_set_animation("walk")
+			else:
+				handle_set_animation("idle")
+		else:
+			handle_set_animation("duck")
+			
+#	ЙОУ КРУТЫЕ ПОВОРОТЫ СПРАЙТА
+	if velocity.x < 0 and not sprite.flip_h:
+		sprite.flip_h = true
+	elif velocity.x > 0 and sprite.flip_h:
+		sprite.flip_h = false
+		
+#	Изменение колизии при приседе
+	if is_ducking:
+		if not(collision.scale.y == 0.5):
+			collision.scale.y = 0.5
+			collision.position.y += 3
+	else:
+		if not(collision.scale.y == 1):
+			collision.scale.y = 1
+			collision.position.y -= 3
+		
+func accelerate(accel: float, max_speed: float, delta: float):
+	velocity.x += accel * delta
+
+	if abs(velocity.x) >= max_speed:
+		deccelerate(run_deccel if is_running else walk_deccel, max_speed, delta)
+
+func deccelerate(deccel: float, min_speed: float, delta: float):
+	if velocity.x > min_speed:
+		velocity.x -= deccel * delta
+		if velocity.x < min_speed:
+			velocity.x = min_speed
+	elif velocity.x < min_speed:
+		velocity.x += deccel * delta
+		if velocity.x > min_speed:
+			velocity.x = min_speed
+			
+func handle_set_animation(name:StringName):
+	if sprite.animation == name:
+		return
+	else:
+		sprite.animation = name
