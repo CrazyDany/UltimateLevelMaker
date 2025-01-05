@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://bkxl30vuvb0a6"]
+[gd_scene load_steps=4 format=3 uid="uid://bkxl30vuvb0a6"]
 
 [ext_resource type="PackedScene" uid="uid://4wnt76inseb1" path="res://nodes/player.tscn" id="1_sv5t6"]
 [ext_resource type="PackedScene" uid="uid://08y4jcr3lk7e" path="res://nodes/player_sprite_nodes/Ceaser.tscn" id="2_hb3b6"]
@@ -6,21 +6,13 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pqn7r"]
 size = Vector2(1707, 20)
 
-[sub_resource type="SegmentShape2D" id="SegmentShape2D_mir46"]
-a = Vector2(94, 4)
-b = Vector2(-460, -47)
-
 [node name="DevScene" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_sv5t6")]
-position = Vector2(-850, -1)
 
 [node name="Sprite" parent="Player" instance=ExtResource("2_hb3b6")]
 animation = &"duck"
 frame = 0
-
-[node name="Camera2D" type="Camera2D" parent="Player"]
-zoom = Vector2(3, 3)
 
 [node name="Tiles" type="Node2D" parent="."]
 
@@ -31,7 +23,5 @@ position = Vector2(-52.5, 10)
 shape = SubResource("RectangleShape2D_pqn7r")
 debug_color = Color(0.262809, 0.613491, 0.457334, 0.42)
 
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="Tiles/StaticBody2D"]
-position = Vector2(-44, -2)
-shape = SubResource("SegmentShape2D_mir46")
-debug_color = Color(0.262809, 0.613491, 0.457334, 0.42)
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(3, 3)
