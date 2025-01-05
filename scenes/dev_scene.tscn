@@ -1,8 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://bkxl30vuvb0a6"]
+[gd_scene load_steps=7 format=3 uid="uid://bkxl30vuvb0a6"]
 
 [ext_resource type="Texture2D" uid="uid://dhgxr27vxl7hn" path="res://assets/backgrounds/background.png" id="1_hhl1k"]
 [ext_resource type="PackedScene" uid="uid://4wnt76inseb1" path="res://nodes/player.tscn" id="1_sv5t6"]
+[ext_resource type="Shader" path="res://scenes/scroller.gdshader" id="2_ct2j6"]
 [ext_resource type="PackedScene" uid="uid://08y4jcr3lk7e" path="res://nodes/player_sprite_nodes/Ceaser.tscn" id="2_hb3b6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i6tjf"]
+shader = ExtResource("2_ct2j6")
+shader_parameter/direction = Vector2(1, 1)
+shader_parameter/speed_scale = 1.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pqn7r"]
 size = Vector2(2596, 61)
@@ -11,10 +17,11 @@ size = Vector2(2596, 61)
 
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(0.529413, 0.7183, 0.781666, 1)
-offset_left = -3307.0
-offset_top = -1317.0
-offset_right = 1844.0
-offset_bottom = 1140.0
+material = SubResource("ShaderMaterial_i6tjf")
+offset_left = -9005.0
+offset_top = -5057.0
+offset_right = 8476.0
+offset_bottom = 4436.0
 texture = ExtResource("1_hhl1k")
 stretch_mode = 1
 

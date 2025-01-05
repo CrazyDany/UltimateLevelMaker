@@ -5,8 +5,8 @@ extends CharacterBody2D
 @export var walk_accel: float = 225.5
 @export var walk_deccel: float = 250.5
 
-@export var max_run_speed: float = 140
-@export var run_accel: float = 165.5
+@export var max_run_speed: float = 200
+@export var run_accel: float = 125.5
 @export var run_deccel: float = 265.5
 
 @export var max_duck_speed: float = 90
@@ -30,6 +30,7 @@ func _physics_process(delta: float) -> void:
 	var is_moving = Input.is_action_pressed("Left") or Input.is_action_pressed("Right")
 	var in_air = not(is_on_floor())
 	var is_ducking:bool = Input.is_action_pressed("Down")
+	var is_looking_up:bool = Input.is_action_pressed("Up")
 
 	if Input.is_action_pressed("Right"):
 		input_vector.x += 1
@@ -47,6 +48,9 @@ func _physics_process(delta: float) -> void:
 				deccelerate(run_deccel, 0, delta)
 			else:
 				deccelerate(walk_deccel, 0, delta)
+		if not is_running:
+			if is_looking_up:
+				pass
 	else:
 		deccelerate(duck_dessel, 0, delta)
 			
@@ -59,28 +63,42 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("Jump") and is_on_floor():
 			velocity.y = -jump_strenth
 
+	if (abs(velocity).x > 0) and (is_moving):
+		anim.speed_scale = (abs(velocity.x) * (max_walk_speed/16))/250
+	else:
+		anim.speed_scale = 1
 	move_and_slide()
 	
-#	АНИМАЦИИ
+#	Анимация
 	if in_air:
 		if velocity.y > 0:
-			handle_set_animation("Fall")
+			if abs(velocity.x) >= 190:
+				handle_set_animation("RunJump")
+			else:
+				handle_set_animation("Fall")
 		elif not(anim.current_animation == "Fall"):
-			handle_set_animation("Jump")
+			if abs(velocity.x) >= 190:
+				handle_set_animation("RunJump")
+			else:
+				handle_set_animation("Jump")
 	else:
 		if not is_ducking:
 			if is_moving:
 				if (Input.is_action_pressed("Right") and velocity.x < 0) or (Input.is_action_pressed("Left") and velocity.x > 0):
 					handle_set_animation("Skid")
 				else:
-					if is_running:
+					if abs(velocity.x) >= 190:
 						handle_set_animation("Run")
 					else:
 						handle_set_animation("Walk")
 			else:
-				handle_set_animation("Idle")
+				if not is_looking_up:
+					handle_set_animation("Idle")
+				else:
+					handle_set_animation("Look_Up")
 		else:
 			handle_set_animation("Duck")
+
 			
 #	ЙОУ КРУТЫЕ ПОВОРОТЫ СПРАЙТА
 	if velocity.x < 0 and not sprite.flip_h:
