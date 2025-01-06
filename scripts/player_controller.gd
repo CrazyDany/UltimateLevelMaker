@@ -1,25 +1,25 @@
 extends CharacterBody2D
 
 # ЧТОБЫ КОНВЕРТИРОВАТЬ СКОРОСТЬ ИЗ SMW В ТУ КОТОРУЮ ИСПОЛЬЗУЕТ ДВИЖОК УМНОЖЬТЕ ЕЕ НА 3.75 (Но для ускорений дополнительно поделить на 2.5)
-@export var walk_max_speed: float = 52.5
-@export var walk_accel: float = 90
-@export var walk_deccel: float = 300
+@export var walk_max_speed: float = 100.5
+@export var walk_accel: float = 120
+@export var walk_deccel: float = 150
 
 @export var max_jump_height: float = 45
 @export var min_jump_height: float = 30
 
 #Перменные буфферизации прыжкка
-const buffer_time: float = 0.02
+const buffer_time: float = 0.15
 
-@export var run_max_speed: float = 120
+@export var run_max_speed: float = 220
 @export var run_accel: float = 175
 @export var run_deccel: float = 300
 
-@export var srun_max_speed: float = 225
+@export var srun_max_speed: float = 250
 @export var srun_accel: float = 225
 @export var srun_deccel: float = 400
 
-@export var smeter_add: float = 0.25
+@export var smeter_add: float = 0.5
 @export var smeter_sub: float = 0.5
 
 @export var duck_max_speed: float = 0
@@ -48,6 +48,7 @@ func _physics_process(delta: float) -> void:
 	gravity(delta)
 	horizontal_move(delta)
 	using_s_meter()
+	buffer_jump()
 	jump()
 
 	handle_animator()
@@ -111,7 +112,10 @@ func handle_animator():
 				else:
 					set_animation("Jump")
 			else:
-				set_animation("Fall")
+				if s_meter == 100:
+					set_animation("RunJump")
+				else:
+					set_animation("Fall")
 				
 	if (abs(velocity).x > 0):
 		anim.speed_scale = (abs(velocity.x) * (walk_max_speed / 16)) / 250
@@ -144,7 +148,7 @@ func horizontal_move(delta: float):
 
 func jump():
 	if (jumpKey_pressed) and is_on_floor() and (not downKey):
-		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 2)
+		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
 	if Input.is_action_just_released("Jump"):
 		if velocity.y < -min_jump_height:
 			velocity.y = -min_jump_height
@@ -157,3 +161,10 @@ func using_s_meter():
 		s_meter = clamp(s_meter + smeter_add + s_meter / 500, 0, 100)
 	else:
 		s_meter = clamp(s_meter - smeter_sub - s_meter / 400, 0, 100)
+		
+func buffer_jump():
+	if jumpKey_pressed and not is_on_floor():
+		jump_buffer_timer.start(buffer_time)
+	if jump_buffer_timer.time_left > 0 and is_on_floor():
+		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
+		
