@@ -61,7 +61,16 @@ func _physics_process(delta: float) -> void:
 #	Прыжок
 	if not is_ducking:
 		if Input.is_action_just_pressed("Jump") and is_on_floor():
-			velocity.y = -jump_strenth
+			if not is_running:
+				velocity.y = -jump_strenth
+			else:
+				if velocity.x > 0:
+					velocity.y = -jump_strenth - velocity.x/3
+				elif velocity.x < 0:
+					velocity.y = -jump_strenth + velocity.x/3
+		if Input.is_action_just_released("Jump"):
+			if velocity.y < -50:
+				velocity.y = -50
 
 	if (abs(velocity).x > 0) and (is_moving):
 		anim.speed_scale = (abs(velocity.x) * (max_walk_speed/16))/250
