@@ -7,6 +7,21 @@ size = Vector2(10, 12)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_myhy6")
+walk_max_speed = null
+walk_accel = null
+walk_deccel = null
+max_jump_height = null
+min_jump_height = null
+run_max_speed = null
+run_accel = null
+run_deccel = null
+srun_max_speed = null
+srun_accel = null
+srun_deccel = null
+smeter_add = null
+smeter_sub = null
+duck_max_speed = null
+duck_deccel = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(5, -6)

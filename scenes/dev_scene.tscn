@@ -98,13 +98,13 @@ tile_map_data = PackedByteArray("AACQ/wAAAQAAAAAAAACQ/wEAAQADAAAAAACQ/wIAAQADAAA
 tile_set = SubResource("TileSet_nmi5n")
 
 [node name="Player" parent="." instance=ExtResource("1_sv5t6")]
-position = Vector2(-853, -21)
+position = Vector2(-1711, -2)
 
 [node name="Sprite" parent="Player" instance=ExtResource("2_hb3b6")]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(4, -9)
-zoom = Vector2(3.8, 3.8)
+zoom = Vector2(3, 3)
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 drag_left_margin = 0.25

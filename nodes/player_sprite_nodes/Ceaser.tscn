@@ -400,7 +400,7 @@ _data = {
 [node name="Sprite2D" type="AnimatedSprite2D"]
 position = Vector2(5, -8)
 sprite_frames = SubResource("SpriteFrames_rvnyw")
-animation = &"walk"
+animation = &"duck"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
