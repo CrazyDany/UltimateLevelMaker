@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Player
+
 # ЧТОБЫ КОНВЕРТИРОВАТЬ СКОРОСТЬ ИЗ SMW В ТУ КОТОРУЮ ИСПОЛЬЗУЕТ ДВИЖОК УМНОЖЬТЕ ЕЕ НА 3.75 (Но для ускорений дополнительно поделить на 2.5)
 @export var walk_max_speed: float = 100.5
 @export var walk_accel: float = 120
@@ -167,4 +169,3 @@ func buffer_jump():
 		jump_buffer_timer.start(buffer_time)
 	if jump_buffer_timer.time_left > 0 and is_on_floor():
 		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
-		

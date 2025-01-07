@@ -1,14 +1,13 @@
 extends StaticBody2D
 
-var init_y: float 
-@onready var sprite: Sprite2D = $Sprite2D
+class_name Block
 
-func _ready():
-	init_y = sprite.position.y
-	
-func _physics_process(delta):
-	sprite.position.y = lerp(sprite.position.y, init_y, 0.2)
+@onready var sprite: AnimatedSprite2D = $Sprite
+@onready var bottom_collision: Area2D = $BottomArea
 
-func _on_area_2d_area_entered(area):
-	if area.get_parent() is CharacterBody2D:
-		sprite.position.y -= 7
+signal player_bottom_bump(player: Player)
+signal block_breaked
+
+func _on_bottom_area_area_entered(area: Area2D) -> void:
+	if area.get_parent() is Player:
+		player_bottom_bump.emit(area.get_parent())

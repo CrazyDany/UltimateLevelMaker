@@ -20,9 +20,9 @@ one_shot = true
 
 [node name="CayoutTimer" type="Timer" parent="."]
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="UpperArea" type="Area2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperArea"]
 position = Vector2(5, -12)
 shape = SubResource("RectangleShape2D_r4kla")
 debug_color = Color(0.878431, 0, 0, 0.419608)

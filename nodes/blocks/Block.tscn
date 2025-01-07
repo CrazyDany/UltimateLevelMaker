@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=3 uid="uid://qrdd5y85gubb"]
+
+[ext_resource type="Script" path="res://scripts/block.gd" id="1_4rr64"]
+[ext_resource type="Texture2D" uid="uid://b0le3rel5dhno" path="res://assets/objects/blocks/brick_block.png" id="1_qarxx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l81xo"]
+size = Vector2(16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hwpna"]
+atlas = ExtResource("1_qarxx")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sbut1"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hwpna")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jet8p"]
+size = Vector2(16, 3)
+
+[node name="Block" type="StaticBody2D"]
+script = ExtResource("1_4rr64")
+
+[node name="BlockCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_l81xo")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_sbut1")
+
+[node name="BottomArea" type="Area2D" parent="."]
+
+[node name="BottomCollision" type="CollisionShape2D" parent="BottomArea"]
+position = Vector2(0, 6.5)
+shape = SubResource("RectangleShape2D_jet8p")
+debug_color = Color(0.798289, 0.391971, 0.425051, 0.42)
+
+[connection signal="area_entered" from="BottomArea" to="." method="_on_bottom_area_area_entered"]
