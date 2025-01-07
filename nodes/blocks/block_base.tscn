@@ -1,13 +1,13 @@
 [gd_scene load_steps=7 format=3 uid="uid://qrdd5y85gubb"]
 
 [ext_resource type="Script" path="res://scripts/block.gd" id="1_4rr64"]
-[ext_resource type="Texture2D" uid="uid://b0le3rel5dhno" path="res://assets/objects/blocks/brick_block.png" id="1_qarxx"]
+[ext_resource type="Texture2D" uid="uid://b0le3rel5dhno" path="res://assets/objects/blocks/brick_block.png" id="2_uce1b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l81xo"]
 size = Vector2(16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hwpna"]
-atlas = ExtResource("1_qarxx")
+atlas = ExtResource("2_uce1b")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_sbut1"]
