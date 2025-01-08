@@ -13,16 +13,16 @@ class_name Player
 #Перменные буфферизации прыжкка
 const buffer_time: float = 0.15
 
-@export var run_max_speed: float = 220
-@export var run_accel: float = 275
-@export var run_deccel: float = 300
+@export var run_max_speed: float = 175
+@export var run_accel: float = 300
+@export var run_deccel: float = 175
 
-@export var srun_max_speed: float = 250
+@export var srun_max_speed: float = 225
 @export var srun_accel: float = 225
 @export var srun_deccel: float = 400
 
-@export var smeter_add: float = 0.5
-@export var smeter_sub: float = 0.5
+@export var smeter_add: float = 0.35
+@export var smeter_sub: float = 0.6
 
 @export var duck_max_speed: float = 0
 @export var duck_deccel: float = 45

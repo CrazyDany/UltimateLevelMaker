@@ -8,3 +8,6 @@ func _on_matched(player: Player):
 	#player.walk_max_speed*=1.05
 	#player.max_jump_height*= 1.1
 	
+func _ready():
+	animator.play("rotate")
+	

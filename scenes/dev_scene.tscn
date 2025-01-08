@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://qrdd5y85gubb" path="res://nodes/blocks/brick_block.tscn" id="3_inmfw"]
 [ext_resource type="PackedScene" uid="uid://cahljnpgh1lht" path="res://nodes/blocks/lucky_block.tscn" id="4_xblo4"]
 [ext_resource type="Texture2D" uid="uid://iu0lfujcm3dl" path="res://assets/tiles/BaseTilemap.png" id="5_3ls6y"]
-[ext_resource type="PackedScene" uid="uid://bfyrjf3krc7kk" path="res://nodes/steroid.tscn" id="5_eq3uc"]
+[ext_resource type="PackedScene" uid="uid://bfyrjf3krc7kk" path="res://nodes/power-up.tscn" id="5_eq3uc"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i6tjf"]
 shader = ExtResource("2_ct2j6")

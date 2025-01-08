@@ -3,6 +3,7 @@ class_name Item
 
 @onready var sprite: AnimatedSprite2D = $Sprite
 @onready var collision: Area2D = $Collision
+@onready var animator: AnimationPlayer = $AnimationPlayer
 
 @export var matchable:bool = true
 
