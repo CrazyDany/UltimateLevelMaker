@@ -7,15 +7,15 @@ class_name Player
 @export var walk_accel: float = 120
 @export var walk_deccel: float = 190
 
-@export var max_jump_height: float = 45
-@export var min_jump_height: float = 30
+@export var max_jump_height: float = 50
+@export var min_jump_height: float = 165
 
 #Перменные буфферизации прыжкка
 const buffer_time: float = 0.15
 
 @export var run_max_speed: float = 175
 @export var run_accel: float = 300
-@export var run_deccel: float = 175
+@export var run_deccel: float = 775
 
 @export var srun_max_speed: float = 225
 @export var srun_accel: float = 225
@@ -25,9 +25,11 @@ const buffer_time: float = 0.15
 @export var smeter_sub: float = 0.6
 
 @export var duck_max_speed: float = 0
-@export var duck_deccel: float = 45
+@export var duck_deccel: float = 145
 
 var s_meter: float = 0
+var coins: float = 0
+var score: float = 0
 
 var leftKey: bool = false
 var rightKey: bool = false
@@ -133,13 +135,15 @@ func horizontal_move(delta: float):
 		moveDirectionX = Input.get_axis("Left", "Right")
 		if runKey:
 			if moveDirectionX != 0:
-				velocity.x = move_toward(velocity.x, moveDirectionX * run_max_speed, run_accel * delta)
 				if s_meter == 100:
 					velocity.x = move_toward(velocity.x, moveDirectionX * srun_max_speed, srun_accel * delta)
+				else:
+					velocity.x = move_toward(velocity.x, moveDirectionX * run_max_speed, run_accel * delta)
 			else:
-				velocity.x = move_toward(velocity.x, moveDirectionX * run_max_speed, run_deccel * delta)
 				if s_meter == 100:
 					velocity.x = move_toward(velocity.x, moveDirectionX * srun_max_speed, srun_deccel * delta)
+				else:
+					velocity.x = move_toward(velocity.x, moveDirectionX * run_max_speed, run_deccel * delta)
 		else:
 			if moveDirectionX != 0:
 				velocity.x = move_toward(velocity.x, moveDirectionX * walk_max_speed, walk_accel * delta)

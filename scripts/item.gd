@@ -1,14 +1,13 @@
 extends AnimatableBody2D
 class_name Item
 
-@onready var sprite: AnimatedSprite2D = $Sprite
+@onready var sprite = $Sprite
 @onready var collision: Area2D = $Collision
-@onready var animator: AnimationPlayer = $AnimationPlayer
 
 @export var matchable:bool = true
 
 func _on_matched(player: Player):
-	pass
+	player.score+= 50
 	
 func _on_body_entered(body: Node):
 	if body is Player:

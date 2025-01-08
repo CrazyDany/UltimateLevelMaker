@@ -1,0 +1,70 @@
+[gd_scene load_steps=5 format=3 uid="uid://c3i4ppfrjoi2y"]
+
+[ext_resource type="Texture2D" uid="uid://b7t8iwgexr34m" path="res://assets/ui/piggy_bank.png" id="1_g64ib"]
+[ext_resource type="Script" path="res://scripts/level_interface.gd" id="1_orw28"]
+[ext_resource type="FontFile" uid="uid://t1vxx2bb75xc" path="res://fonts/SMW.otf" id="2_fmg77"]
+[ext_resource type="Texture2D" uid="uid://bq7ljpi7v1kal" path="res://assets/ui/time_icon.png" id="2_yi8gq"]
+
+[node name="LevelInterface" type="Control"]
+layout_mode = 3
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+grow_horizontal = 2
+size_flags_horizontal = 8
+script = ExtResource("1_orw28")
+
+[node name="CounterContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+offset_left = -568.0
+offset_top = 8.0
+offset_right = -378.0
+offset_bottom = 85.0
+scale = Vector2(0.720001, 0.720001)
+alignment = 1
+
+[node name="IconCounter" type="TextureRect" parent="CounterContainer"]
+layout_direction = 2
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_stretch_ratio = 0.0
+texture = ExtResource("1_g64ib")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="CounterLable" type="Label" parent="CounterContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_fmg77")
+theme_override_font_sizes/font_size = 35
+text = ": 20"
+horizontal_alignment = 1
+vertical_alignment = 1
+visible_characters_behavior = 3
+
+[node name="SecoundContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+offset_left = 448.0
+offset_right = 553.0
+offset_bottom = 77.0
+alignment = 1
+
+[node name="TimerContainer" type="HBoxContainer" parent="SecoundContainer"]
+layout_mode = 2
+
+[node name="IconTimer" type="TextureRect" parent="SecoundContainer/TimerContainer"]
+layout_mode = 2
+texture = ExtResource("2_yi8gq")
+expand_mode = 3
+
+[node name="TimerLabel" type="Label" parent="SecoundContainer/TimerContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_fmg77")
+theme_override_font_sizes/font_size = 20
+text = "999"
+
+[node name="ScoreLabel" type="Label" parent="SecoundContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_fmg77")
+theme_override_font_sizes/font_size = 20
+text = "000000
+"
