@@ -5,7 +5,7 @@ class_name Player
 # ЧТОБЫ КОНВЕРТИРОВАТЬ СКОРОСТЬ ИЗ SMW В ТУ КОТОРУЮ ИСПОЛЬЗУЕТ ДВИЖОК УМНОЖЬТЕ ЕЕ НА 3.75 (Но для ускорений дополнительно поделить на 2.5)
 @export var walk_max_speed: float = 100.5
 @export var walk_accel: float = 120
-@export var walk_deccel: float = 150
+@export var walk_deccel: float = 190
 
 @export var max_jump_height: float = 45
 @export var min_jump_height: float = 30
@@ -14,7 +14,7 @@ class_name Player
 const buffer_time: float = 0.15
 
 @export var run_max_speed: float = 220
-@export var run_accel: float = 175
+@export var run_accel: float = 275
 @export var run_deccel: float = 300
 
 @export var srun_max_speed: float = 250

@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://qrdd5y85gubb"]
 
-[ext_resource type="Script" path="res://scripts/block.gd" id="1_4rr64"]
+[ext_resource type="Script" path="res://scripts/brick_block.gd" id="1_3h7sr"]
 [ext_resource type="Texture2D" uid="uid://b0le3rel5dhno" path="res://assets/objects/blocks/brick_block.png" id="2_uce1b"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l81xo"]
@@ -24,8 +24,9 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jet8p"]
 size = Vector2(16, 3)
 
-[node name="Block" type="StaticBody2D"]
-script = ExtResource("1_4rr64")
+[node name="BrickBlock" type="StaticBody2D" node_paths=PackedStringArray("givable_item")]
+script = ExtResource("1_3h7sr")
+givable_item = NodePath("")
 
 [node name="BlockCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_l81xo")
