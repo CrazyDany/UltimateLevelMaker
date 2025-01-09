@@ -1,4 +1,5 @@
 extends Block
 
 func _on_player_bottom_bump(player: Player):
-	pass
+	if player.is_big:
+		queue_free()
