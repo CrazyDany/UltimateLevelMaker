@@ -5,7 +5,7 @@ class_name Player
 # ЧТОБЫ КОНВЕРТИРОВАТЬ СКОРОСТЬ ИЗ SMW В ТУ КОТОРУЮ ИСПОЛЬЗУЕТ ДВИЖОК УМНОЖЬТЕ ЕЕ НА 3.75 (Но для ускорений дополнительно поделить на 2.5)
 @export var walk_max_speed: float = 100.5
 @export var walk_accel: float = 120
-@export var walk_deccel: float = 190
+@export var walk_deccel: float = 590
 
 @export var max_jump_height: float = 50
 @export var min_jump_height: float = 165
@@ -19,13 +19,13 @@ const buffer_time: float = 0.15
 
 @export var srun_max_speed: float = 225
 @export var srun_accel: float = 100
-@export var srun_deccel: float = 600
+@export var srun_deccel: float = 800
 
 @export var smeter_add: float = 0.25
 @export var smeter_sub: float = 0.6
 
-@export var duck_max_speed: float = 0
-@export var duck_deccel: float = 200
+@export var duck_max_speed: float = 100
+@export var duck_deccel: float = 50
 
 #СКЛОНЫ
 var cur_slope: String = "FLAT"
@@ -36,7 +36,7 @@ var cur_slope: String = "FLAT"
 	"GRADUAL": [0.80, 0.85, 0.85, false],
 	"NORMAL": [0.70, 0.75, 0.75, false],
 	"STEEP": [0.55, 0.60, 0.60, true],
-	"VERY STEEP": [0.3, 0.1, 0.1, true]
+	"VERY STEEP": [0.2, 0.2, 0.2, true]
 }
 
 var s_meter: float = 0
@@ -74,7 +74,6 @@ func _physics_process(delta: float) -> void:
 	buffer_jump()
 	jump()
 	
-
 	handle_animator()
 
 	move_and_slide()
@@ -196,12 +195,15 @@ func horizontal_move(delta: float):
 
 		# Автоходьба по склонам
 		if slopes_moddifs.get(cur_slope)[3] and not (rightKey or leftKey):
-			var slope_speed = normal.normalized().x * walk_max_speed
-			velocity.x = move_toward(velocity.x, slope_speed, deceleration * delta)
-			print("AUTO RUN")
+			var slope_speed = normal.normalized().x * walk_max_speed * (1/slopes_moddifs.get(cur_slope)[0])
+			velocity.x = lerp(self.velocity.x, slope_speed, 0.06)
 	else:
-		var duck_speed = moveDirectionX * duck_max_speed
-		velocity.x = move_toward(velocity.x, duck_speed, duck_deccel * delta)
+#		ОБРАБОТКА УТОЧК КРЯ КРЯ КРЯ КРЯ
+		if cur_slope == "FLAT":
+			velocity.x = move_toward(velocity.x, 0, duck_deccel * delta)
+		else:
+			var normal: Vector2 = get_floor_normal()
+			velocity.x = lerp(self.velocity.x, normal.normalized().x * duck_max_speed * 2, 0.15)
 
 
 func jump():
@@ -238,5 +240,3 @@ func handle_slopes():
 		cur_slope = "VERY STEEP"
 	else:
 		cur_slope = "FLAT"
-	#print(angle)
-	print(cur_slope)
