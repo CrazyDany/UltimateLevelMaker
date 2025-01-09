@@ -36,7 +36,7 @@ var cur_slope: String = "FLAT"
 	"GRADUAL": [0.80, 0.85, 0.85, false],
 	"NORMAL": [0.70, 0.75, 0.75, false],
 	"STEEP": [0.55, 0.60, 0.60, true],
-	"VERY STEEP": [0.30, 0.25, 0.25, true]
+	"VERY STEEP": [0.3, 0.1, 0.1, true]
 }
 
 var s_meter: float = 0
@@ -62,7 +62,7 @@ var is_big: bool = false
 @onready var jump_buffer_timer: Timer = $JumpBuffer
 
 func _ready() -> void:
-	floor_snap_length = 8
+	floor_snap_length = 100
 
 func _physics_process(delta: float) -> void:
 	get_input()
@@ -228,14 +228,15 @@ func buffer_jump():
 
 func handle_slopes():
 	var angle: float = get_floor_angle()
-	if angle > 0 and angle < 0.3:
+	if angle > 0 and angle < 0.35:
 		cur_slope = "GRADUAL"
-	elif angle > 0.3 and angle < 0.6:
+	elif angle > 0.35 and angle < 0.6:
 		cur_slope = "NORMAL"
 	elif angle > 0.6 and angle < 0.8:
 		cur_slope = "STEEP"
-	elif angle > 0.8 and angle < 1:
+	elif angle > 0.8 and angle < 1.2:
 		cur_slope = "VERY STEEP"
 	else:
 		cur_slope = "FLAT"
-	#print(cur_slope)
+	#print(angle)
+	print(cur_slope)

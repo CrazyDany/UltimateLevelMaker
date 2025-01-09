@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://iu0lfujcm3dl"
-path="res://.godot/imported/BaseTilemap.png-d421e9d90e3087d386890857b4ca675a.ctex"
+uid="uid://cqv5kw7yja6s8"
+path="res://.godot/imported/BaseFloorTilemap.png-1cc79f08418d60def22b692c69fd2bc6.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/tiles/BaseTilemap.png"
-dest_files=["res://.godot/imported/BaseTilemap.png-d421e9d90e3087d386890857b4ca675a.ctex"]
+source_file="res://assets/tiles/BaseFloorTilemap.png"
+dest_files=["res://.godot/imported/BaseFloorTilemap.png-1cc79f08418d60def22b692c69fd2bc6.ctex"]
 
 [params]
 
