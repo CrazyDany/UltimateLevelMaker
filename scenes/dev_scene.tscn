@@ -120,7 +120,7 @@ tile_map_data = PackedByteArray("AAAKABwAAgABAAAAAAALABwAAgABAAAAAAAMABwAAgABAAA
 tile_set = SubResource("TileSet_nmi5n")
 
 [node name="Player" parent="." node_paths=PackedStringArray("sprite") instance=ExtResource("1_sv5t6")]
-position = Vector2(836, 319)
+position = Vector2(281, 340)
 floor_stop_on_slope = false
 floor_max_angle = 1.13446
 sprite = NodePath("Sprite")
@@ -146,7 +146,3 @@ offset_left = 10.0
 offset_right = 10.0
 picked_player = NodePath("../../..")
 metadata/_edit_use_anchors_ = true
-
-[connection signal="body_entered" from="Tiles/TileLayer/BrickBlock" to="Tiles/TileLayer/BrickBlock" method="_on_body_entered"]
-[connection signal="body_entered" from="Tiles/TileLayer/@RigidBody2D@139558" to="Tiles/TileLayer/@RigidBody2D@139558" method="_on_body_entered"]
-[connection signal="body_entered" from="Tiles/TileLayer/@RigidBody2D@139559" to="Tiles/TileLayer/@RigidBody2D@139559" method="_on_body_entered"]

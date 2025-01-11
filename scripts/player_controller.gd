@@ -232,13 +232,14 @@ func jump():
 
 	if (spinjumpKey_pressed and not jumpKey_pressed) and is_on_floor() and (not downKey):
 		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
-		in_spinjump = true
+		set_deferred("in_spinjump", true)
 
 	if Input.is_action_just_released("SpinJump") and in_spinjump:
 		if velocity.y < -min_jump_height:
 			velocity.y = -min_jump_height
-
-
+		
+	if is_on_floor():
+		in_spinjump = false
 
 func using_s_meter():
 	if abs(velocity.x) > walk_max_speed:
@@ -249,17 +250,8 @@ func using_s_meter():
 func buffer_jump():
 	if jumpKey_pressed and not is_on_floor():
 		jump_buffer_timer.start(buffer_time)
-		in_spinjump = false
 	if jump_buffer_timer.time_left > 0 and is_on_floor():
 		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
-		in_spinjump = false
-		
-	if spinjumpKey_pressed and not is_on_floor():
-		jump_buffer_timer.start(buffer_time)
-		in_spinjump = false
-	if jump_buffer_timer.time_left > 0 and is_on_floor():
-		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
-		in_spinjump = true
 
 func handle_slopes():
 	var angle: float = get_floor_angle()
@@ -289,3 +281,11 @@ func _on_detect_zone_area_entered(area: Area2D) -> void:
 		if body.matchable:
 			body.matchable = false
 			body._on_matched(self)
+			
+#МЕТОДИКИИИ
+func hurt(actor:Node) -> void:
+	if is_big:
+		is_big = false
+		return
+	else:
+		velocity.y -= 300

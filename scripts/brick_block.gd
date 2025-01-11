@@ -7,5 +7,5 @@ func _on_player_bottom_bump(player: Player):
 		queue_free()
 
 func _on_player_collide(player: Player):
-	if player.in_spinjump:
+	if player.in_spinjump and player.is_big:
 		queue_free()
