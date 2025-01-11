@@ -43,8 +43,8 @@ visible_characters_behavior = 3
 
 [node name="SecoundContainer" type="VBoxContainer" parent="."]
 layout_mode = 2
-offset_left = 448.0
-offset_right = 553.0
+offset_left = 400.0
+offset_right = 558.0
 offset_bottom = 77.0
 alignment = 1
 
@@ -66,5 +66,5 @@ text = "999"
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_fmg77")
 theme_override_font_sizes/font_size = 20
-text = "000000
+text = "000000000
 "

@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1ybbulx1og35"]
+
+[ext_resource type="Script" path="res://scripts/note_block.gd" id="1_t5cy3"]
+[ext_resource type="Texture2D" uid="uid://qo7h03qrtq6t" path="res://assets/objects/blocks/note_block.png" id="2_mtani"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dvqt2"]
+size = Vector2(16, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_82osa"]
+size = Vector2(16, 3)
+
+[node name="NoteBlock" type="RigidBody2D"]
+script = ExtResource("1_t5cy3")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_mtani")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dvqt2")
+
+[node name="BottomArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomArea"]
+position = Vector2(0, 6.5)
+shape = SubResource("RectangleShape2D_82osa")
+debug_color = Color(0.9964, 0, 0.187449, 0.42)
+
+[node name="TopArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TopArea"]
+position = Vector2(0, -6.5)
+shape = SubResource("RectangleShape2D_82osa")
+debug_color = Color(0.9964, 0, 0.187449, 0.42)

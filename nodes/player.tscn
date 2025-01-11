@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://4wnt76inseb1"]
+
+[ext_resource type="Script" path="res://scripts/player_controller.gd" id="1_myhy6"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c2w5u"]
+radius = 5.0
+height = 12.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r4kla"]
+size = Vector2(6, 2)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mqq30"]
+size = Vector2(12, 15)
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("jump_buffer_timer")]
+floor_constant_speed = true
+floor_max_angle = 1.0472
+platform_on_leave = 2
+script = ExtResource("1_myhy6")
+jump_buffer_timer = NodePath("JumpBuffer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(5, -6)
+shape = SubResource("CapsuleShape2D_c2w5u")
+
+[node name="JumpBuffer" type="Timer" parent="."]
+one_shot = true
+
+[node name="CayoutTimer" type="Timer" parent="."]
+
+[node name="UpperArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="UpperArea"]
+position = Vector2(5, -12)
+shape = SubResource("RectangleShape2D_r4kla")
+debug_color = Color(0.878431, 0, 0, 0.419608)
+
+[node name="DetectZone" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectZone"]
+position = Vector2(5, -6.5)
+scale = Vector2(0.9, 0.9)
+shape = SubResource("RectangleShape2D_mqq30")
+
+[connection signal="area_entered" from="DetectZone" to="." method="_on_detect_zone_area_entered"]
+[connection signal="body_entered" from="DetectZone" to="." method="_on_detect_zone_body_entered"]

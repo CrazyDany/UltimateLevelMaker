@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/lucky_block.gd" id="1_0d36d"]
 [ext_resource type="Texture2D" uid="uid://hslc0a8f8jo2" path="res://assets/objects/blocks/obj_block.png" id="2_ejt84"]
-[ext_resource type="PackedScene" uid="uid://bfyrjf3krc7kk" path="res://assets/nodes/power-up.tscn" id="3_8dh4p"]
+[ext_resource type="PackedScene" uid="uid://bfyrjf3krc7kk" path="res://nodes/power-up.tscn" id="3_8dh4p"]
 [ext_resource type="Texture2D" uid="uid://cayxx0pr10ow3" path="res://assets/objects/blocks/obj_block_used.png" id="3_ffgfm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l81xo"]
@@ -38,9 +38,11 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jet8p"]
 size = Vector2(16, 3)
 
-[node name="LuckyBlock" type="StaticBody2D"]
+[node name="LuckyBlock" type="RigidBody2D" node_paths=PackedStringArray("sprite", "bottom_collision")]
 script = ExtResource("1_0d36d")
 list_items = Array[PackedScene]([ExtResource("3_8dh4p")])
+sprite = NodePath("Sprite")
+bottom_collision = NodePath("BottomArea")
 
 [node name="BlockCollision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_l81xo")
@@ -54,5 +56,3 @@ sprite_frames = SubResource("SpriteFrames_sbut1")
 position = Vector2(0, 6.5)
 shape = SubResource("RectangleShape2D_jet8p")
 debug_color = Color(0.798289, 0.391971, 0.425051, 0.42)
-
-[connection signal="area_entered" from="BottomArea" to="." method="_on_bottom_area_area_entered"]

@@ -1,23 +1,34 @@
-extends StaticBody2D
+class_name Block extends RigidBody2D
 
-class_name Block
+@export var sprite: Node2D
+@export var bottom_collision: Area2D
 
-@onready var sprite: AnimatedSprite2D = $Sprite
-@onready var collision: CollisionShape2D = $BlockCollision
-@onready var bottom_collision: Area2D = $BottomArea
-
-@onready var init_y: float = self.position.y
+var init_y: float
 
 func _on_bottom_area_area_entered(area: Area2D) -> void:
 	if area.get_parent() is Player:
 		_on_player_bottom_bump(area.get_parent())
-		self.position.y -= 5
+		self.sprite.position.y -= 5
 
 func _on_player_bottom_bump(player: Player):
 	pass
 
-func _ready() -> void:
-	self.sprite.animation = "default"
+func _on_player_collide(player: Player):
+	pass
+	
+func on_ready() -> void:
+	pass
 
+func _ready() -> void:
+	assert(sprite, "У блока {path} не определен спрайт".format({"path": self.get_script().get_path()}))
+	assert(bottom_collision, "У блока {path} не определена нижняя маска".format({"path": self.get_script().get_path()}))
+	bottom_collision.connect("area_entered", _on_bottom_area_area_entered)
+	init_y = self.sprite.position.y
+	#self.sprite.animation = "default"
+	on_ready()
+	
 func _physics_process(delta):
-	self.position.y = lerp(self.position.y, init_y, 0.2)
+	self.sprite.position.y = lerp(self.sprite.position.y, init_y, 0.2)
+
+func _init() -> void:
+	freeze = true

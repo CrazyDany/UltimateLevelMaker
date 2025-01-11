@@ -1,6 +1,14 @@
-[gd_scene load_steps=25 format=3 uid="uid://08y4jcr3lk7e"]
+[gd_scene load_steps=35 format=3 uid="uid://08y4jcr3lk7e"]
 
 [ext_resource type="Texture2D" uid="uid://cgbej8dx4ruuu" path="res://assets/players/ceaser.png" id="1_quftc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8iw4"]
+atlas = ExtResource("1_quftc")
+region = Rect2(272, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2u8ht"]
+atlas = ExtResource("1_quftc")
+region = Rect2(288, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hyrxt"]
 atlas = ExtResource("1_quftc")
@@ -38,6 +46,26 @@ region = Rect2(176, 0, 16, 16)
 atlas = ExtResource("1_quftc")
 region = Rect2(128, 0, 16, 16)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_w1xws"]
+atlas = ExtResource("1_quftc")
+region = Rect2(192, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_70aca"]
+atlas = ExtResource("1_quftc")
+region = Rect2(208, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kp0c2"]
+atlas = ExtResource("1_quftc")
+region = Rect2(224, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xa24"]
+atlas = ExtResource("1_quftc")
+region = Rect2(240, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0cb7i"]
+atlas = ExtResource("1_quftc")
+region = Rect2(256, 0, 16, 16)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_14ncw"]
 atlas = ExtResource("1_quftc")
 region = Rect2(48, 0, 16, 16)
@@ -52,6 +80,17 @@ region = Rect2(80, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_rvnyw"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8iw4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2u8ht")
+}],
+"loop": true,
+"name": &"death",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hyrxt")
@@ -117,6 +156,31 @@ animations = [{
 }],
 "loop": true,
 "name": &"skid",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w1xws")
+}],
+"loop": true,
+"name": &"slide",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_70aca")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kp0c2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xa24")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0cb7i")
+}],
+"loop": true,
+"name": &"spin-jump",
 "speed": 5.0
 }, {
 "frames": [{
@@ -272,6 +336,21 @@ tracks/1/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_jb7i4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="Animation" id="Animation_3se8j"]
 resource_name = "Run"
 length = 0.400003
@@ -355,6 +434,63 @@ tracks/1/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_bqbad"]
+resource_name = "Slide"
+length = 0.06667
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"slide"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_xjxgf"]
+resource_name = "SpinJump"
+length = 0.26667
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"spin-jump"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0666667, 0.133333, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
 [sub_resource type="Animation" id="Animation_y46ox"]
 resource_name = "Walk"
 length = 0.800003
@@ -391,16 +527,19 @@ _data = {
 "Idle": SubResource("Animation_k1dhy"),
 "Jump": SubResource("Animation_ycj80"),
 "Look_Up": SubResource("Animation_b7126"),
+"RESET": SubResource("Animation_jb7i4"),
 "Run": SubResource("Animation_3se8j"),
 "RunJump": SubResource("Animation_qxx47"),
 "Skid": SubResource("Animation_eaa24"),
+"Slide": SubResource("Animation_bqbad"),
+"SpinJump": SubResource("Animation_xjxgf"),
 "Walk": SubResource("Animation_y46ox")
 }
 
 [node name="Sprite2D" type="AnimatedSprite2D"]
 position = Vector2(5, -8)
 sprite_frames = SubResource("SpriteFrames_rvnyw")
-animation = &"duck"
+animation = &"spin-jump"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

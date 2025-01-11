@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cafhg15x65y00"]
+
+[ext_resource type="Script" path="res://scripts/thorns_block.gd" id="1_4x0b8"]
+[ext_resource type="Texture2D" uid="uid://boaw1xs0pjab3" path="res://assets/objects/obstacles/Thorns.png" id="2_fgin3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dvqt2"]
+size = Vector2(12, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_82osa"]
+size = Vector2(12, 2)
+
+[node name="ThornsBlock" type="RigidBody2D" node_paths=PackedStringArray("sprite", "bottom_collision")]
+script = ExtResource("1_4x0b8")
+sprite = NodePath("Sprite2D")
+bottom_collision = NodePath("BottomArea")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_fgin3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dvqt2")
+
+[node name="BottomArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BottomArea"]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_82osa")
+debug_color = Color(0.9964, 0, 0.187449, 0.42)

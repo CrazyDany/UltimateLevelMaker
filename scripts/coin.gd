@@ -10,7 +10,7 @@ func _on_matched(player: Player):
 	player.score+= 100
 	
 	if not matched:
-		var effect_scene = preload("res://assets/nodes/effects/glosses_effect.tscn")
+		var effect_scene = preload("res://nodes/effects/glosses_effect.tscn")
 		if effect_scene:
 			var effect = effect_scene.instantiate()
 			add_child(effect)
@@ -18,8 +18,6 @@ func _on_matched(player: Player):
 			effect.get_node("AnimationPlayer").speed_scale*= 0.8
 			effect.get_node("AnimatedSprite2D").self_modulate.a = 0.7
 			effect.position.y -= 5
-		else:
-			print("Failed to load scene.")
 		matched = true
 	
 func _ready():

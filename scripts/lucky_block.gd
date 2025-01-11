@@ -19,6 +19,3 @@ func _spawn_item(item_scene: PackedScene, player: Player):
 	item_instance.position.y -= 12
 	if item_instance is Coin:
 		item_instance._on_matched(player)
-
-func _ready() -> void:
-	self.sprite.animation = "default"

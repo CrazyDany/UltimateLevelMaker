@@ -1,41 +1,41 @@
 [gd_scene load_steps=15 format=3 uid="uid://co63epxb61efx"]
 
-[ext_resource type="Texture2D" uid="uid://do4ycyb1bcl83" path="res://assets/effects/glosses.png" id="1_tggii"]
+[ext_resource type="Texture2D" uid="uid://do4ycyb1bcl83" path="res://assets/effects/glosses.png" id="1_0g1yg"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_kf8yx"]
-atlas = ExtResource("1_tggii")
+atlas = ExtResource("1_0g1yg")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4cmy2"]
-atlas = ExtResource("1_tggii")
+atlas = ExtResource("1_0g1yg")
 region = Rect2(16, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ndcht"]
-atlas = ExtResource("1_tggii")
+atlas = ExtResource("1_0g1yg")
 region = Rect2(32, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_btydh"]
-atlas = ExtResource("1_tggii")
+atlas = ExtResource("1_0g1yg")
 region = Rect2(48, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5ockc"]
-atlas = ExtResource("1_tggii")
+atlas = ExtResource("1_0g1yg")
 region = Rect2(64, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2r5yd"]
-atlas = ExtResource("1_tggii")
+atlas = ExtResource("1_0g1yg")
 region = Rect2(80, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aiuxt"]
-atlas = ExtResource("1_tggii")
+atlas = ExtResource("1_0g1yg")
 region = Rect2(96, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uqg46"]
-atlas = ExtResource("1_tggii")
+atlas = ExtResource("1_0g1yg")
 region = Rect2(112, 0, 16, 16)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_53ate"]
-atlas = ExtResource("1_tggii")
+atlas = ExtResource("1_0g1yg")
 region = Rect2(128, 0, 16, 16)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_ej34b"]

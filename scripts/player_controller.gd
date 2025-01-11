@@ -2,41 +2,37 @@ extends CharacterBody2D
 
 class_name Player
 
-# ЧТОБЫ КОНВЕРТИРОВАТЬ СКОРОСТЬ ИЗ SMW В ТУ КОТОРУЮ ИСПОЛЬЗУЕТ ДВИЖОК УМНОЖЬТЕ ЕЕ НА 3.75 (Но для ускорений дополнительно поделить на 2.5)
 @export var walk_max_speed: float = 100.5
 @export var walk_accel: float = 120
-@export var walk_deccel: float = 590
+@export var walk_deccel: float = 225
 
 @export var max_jump_height: float = 50
 @export var min_jump_height: float = 165
+@export var max_fall_speed: float = 7761
 
-#Перменные буфферизации прыжкка
 const buffer_time: float = 0.15
 
 @export var run_max_speed: float = 175
 @export var run_accel: float = 300
-@export var run_deccel: float = 775
+@export var run_deccel: float = 575
 
 @export var srun_max_speed: float = 225
 @export var srun_accel: float = 100
-@export var srun_deccel: float = 800
+@export var srun_deccel: float = 725
 
 @export var smeter_add: float = 0.25
 @export var smeter_sub: float = 0.6
 
 @export var duck_max_speed: float = 100
-@export var duck_deccel: float = 50
+@export var duck_deccel: float = 125
 
-#СКЛОНЫ
 var cur_slope: String = "FLAT"
 @export var slopes_moddifs: Dictionary = {
-#	МАКСИМАЛЬНАЯ СКОРОСТЬ, УСКОРЕНИЕ, ЗАМЕДЛЕНИЕ, АВТОХОДЬБА
-# 	Все численые значения указываются в долях (1 - нормальная скорость, 0.5 - в два раза меньшая и т.д)
 	"FLAT": [1, 1, 1, false],
 	"GRADUAL": [0.80, 0.85, 0.85, false],
 	"NORMAL": [0.70, 0.75, 0.75, false],
 	"STEEP": [0.55, 0.60, 0.60, true],
-	"VERY STEEP": [0.2, 0.2, 0.2, true]
+	"VERY STEEP": [0.175, 0.35, 0.35, true]
 }
 
 var s_meter: float = 0
@@ -48,22 +44,30 @@ var rightKey: bool = false
 var upKey: bool = false
 var downKey: bool = false
 var jumpKey: bool = false
+var spinjumpKey: bool = false
 var jumpKey_pressed: bool = false
+var spinjumpKey_pressed: bool = false
 var runKey: bool = false
 
+var is_sliding: bool = false
+var in_spinjump: bool = false
 var moveDirectionX = 0
 
-#Переменные состояний / поверапов
 var is_big: bool = false
 
-@onready var sprite: AnimatedSprite2D = $Sprite
-@onready var collision = $CollisionShape2D
+@export var sprite: AnimatedSprite2D
 @onready var anim: AnimationPlayer = sprite.get_child(0)
-@onready var jump_buffer_timer: Timer = $JumpBuffer
+@export var jump_buffer_timer: Timer
 
 func _ready() -> void:
-	floor_snap_length = 100
+	assert(sprite and sprite.get_parent() is Player, "У игрока на сцене {path} не определен спрайт".format({"path": self.get_parent().name}))
+	assert(anim and anim.get_parent() == sprite, "У игрока на сцене не определен проигрователь анимаций".format({"path": self.get_parent().name}))
+	assert(jump_buffer_timer, "У игрока не определен таймер буфферизации прыжка".format({"path": self.get_parent().name}))
+	on_ready()
 
+func on_ready() -> void:
+	floor_snap_length = 20
+	
 func _physics_process(delta: float) -> void:
 	get_input()
 
@@ -84,7 +88,9 @@ func get_input():
 	upKey = Input.is_action_pressed("Up")
 	downKey = Input.is_action_pressed("Down")
 	jumpKey_pressed = Input.is_action_just_pressed("Jump")
+	spinjumpKey_pressed = Input.is_action_just_pressed("SpinJump")
 	jumpKey = Input.is_action_pressed("Jump")
+	spinjumpKey = Input.is_action_pressed("SpinJump")
 	runKey = Input.is_action_pressed("Run")
 
 func set_animation(name: StringName):
@@ -100,7 +106,7 @@ func handle_animator():
 		sprite.flip_h = true
 
 	if !(velocity.x == 0) and is_on_floor():
-		if not downKey:
+		if not downKey and not(slopes_moddifs.get(cur_slope)[3] and not (rightKey or leftKey)):
 			if rightKey:
 				if velocity.x > 0:
 					if s_meter == 100:
@@ -118,7 +124,10 @@ func handle_animator():
 				else:
 					set_animation("Skid")
 		else:
-			set_animation("Duck")
+			if not is_sliding and not(slopes_moddifs.get(cur_slope)[3] and not (rightKey or leftKey)):
+				set_animation("Duck")
+			else:
+				set_animation("Slide")
 	else:
 		if is_on_floor():
 			if not downKey:
@@ -127,18 +136,24 @@ func handle_animator():
 				else:
 					set_animation("Idle")
 			else:
-				set_animation("Duck")
+				if is_sliding:
+					set_animation("Slide")
+				else:
+					set_animation("Duck")
 		else:
-			if velocity.y < 0:
-				if s_meter == 100:
-					set_animation("RunJump")
-				else:
-					set_animation("Jump")
+			if in_spinjump:
+				set_animation("SpinJump")
 			else:
-				if s_meter == 100:
-					set_animation("RunJump")
+				if velocity.y < 0:
+					if s_meter == 100:
+						set_animation("RunJump")
+					else:
+						set_animation("Jump")
 				else:
-					set_animation("Fall")
+					if s_meter == 100:
+						set_animation("RunJump")
+					else:
+						set_animation("Fall")
 				
 	if (abs(velocity).x > 0):
 		anim.speed_scale = (abs(velocity.x) * (walk_max_speed / 16)) / 250
@@ -148,6 +163,8 @@ func handle_animator():
 func gravity(delta: float):
 	if (!is_on_floor()):
 		velocity.y += get_gravity().y * delta
+	if velocity.y > max_fall_speed:
+		velocity.y = max_fall_speed
 
 func horizontal_move(delta: float):
 	if not downKey:
@@ -196,25 +213,32 @@ func horizontal_move(delta: float):
 		# Автоходьба по склонам
 		if slopes_moddifs.get(cur_slope)[3] and not (rightKey or leftKey):
 			var slope_speed = normal.normalized().x * walk_max_speed * (1/slopes_moddifs.get(cur_slope)[0])
-			velocity.x = lerp(self.velocity.x, slope_speed, 0.06)
+			velocity.x = lerp(self.velocity.x, slope_speed, 0.2)
 	else:
-#		ОБРАБОТКА УТОЧК КРЯ КРЯ КРЯ КРЯ
 		if cur_slope == "FLAT":
 			velocity.x = move_toward(velocity.x, 0, duck_deccel * delta)
 		else:
 			var normal: Vector2 = get_floor_normal()
-			velocity.x = lerp(self.velocity.x, normal.normalized().x * duck_max_speed * 2, 0.15)
-
+			velocity.x = lerp(self.velocity.x, normal.normalized().x * duck_max_speed * 4, 0.15)
 
 func jump():
-	if (jumpKey_pressed) and is_on_floor() and (not downKey):
+	if (jumpKey_pressed and not spinjumpKey_pressed) and is_on_floor() and (not downKey):
 		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
-	if Input.is_action_just_released("Jump"):
+		in_spinjump = false
+
+	if Input.is_action_just_released("Jump") and not in_spinjump:
 		if velocity.y < -min_jump_height:
 			velocity.y = -min_jump_height
-	if Input.is_action_just_released("Jump"):
-			if velocity.y < -min_jump_height:
-				velocity.y = -min_jump_height
+
+	if (spinjumpKey_pressed and not jumpKey_pressed) and is_on_floor() and (not downKey):
+		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
+		in_spinjump = true
+
+	if Input.is_action_just_released("SpinJump") and in_spinjump:
+		if velocity.y < -min_jump_height:
+			velocity.y = -min_jump_height
+
+
 
 func using_s_meter():
 	if abs(velocity.x) > walk_max_speed:
@@ -225,18 +249,43 @@ func using_s_meter():
 func buffer_jump():
 	if jumpKey_pressed and not is_on_floor():
 		jump_buffer_timer.start(buffer_time)
+		in_spinjump = false
 	if jump_buffer_timer.time_left > 0 and is_on_floor():
 		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
+		in_spinjump = false
+		
+	if spinjumpKey_pressed and not is_on_floor():
+		jump_buffer_timer.start(buffer_time)
+		in_spinjump = false
+	if jump_buffer_timer.time_left > 0 and is_on_floor():
+		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
+		in_spinjump = true
 
 func handle_slopes():
 	var angle: float = get_floor_angle()
-	if angle > 0 and angle < 0.35:
-		cur_slope = "GRADUAL"
-	elif angle > 0.35 and angle < 0.6:
-		cur_slope = "NORMAL"
-	elif angle > 0.6 and angle < 0.8:
-		cur_slope = "STEEP"
-	elif angle > 0.8 and angle < 1.2:
-		cur_slope = "VERY STEEP"
-	else:
+	if not is_on_floor():
 		cur_slope = "FLAT"
+	else:
+		if angle > 0 and angle < 0.35:
+			cur_slope = "GRADUAL"
+		elif angle > 0.35 and angle < 0.6:
+			cur_slope = "NORMAL"
+		elif angle > 0.6 and angle < 0.8:
+			cur_slope = "STEEP"
+		elif angle > 0.8:
+			cur_slope = "VERY STEEP"
+		else:
+			cur_slope = "FLAT"
+	is_sliding = (cur_slope != "FLAT" and downKey)
+
+# Ручная обработка столкновений и подбора предметов и блоков
+func _on_detect_zone_body_entered(body: Node2D) -> void:
+	if body is Block:
+		body._on_player_collide(self)
+
+func _on_detect_zone_area_entered(area: Area2D) -> void:
+	var body = area.get_parent()
+	if body is Item:
+		if body.matchable:
+			body.matchable = false
+			body._on_matched(self)
