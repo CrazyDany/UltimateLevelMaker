@@ -14,7 +14,7 @@ const buffer_time: float = 0.15
 
 @export var run_max_speed: float = 175
 @export var run_accel: float = 300
-@export var run_deccel: float = 575
+@export var run_deccel: float = 900
 
 @export var srun_max_speed: float = 225
 @export var srun_accel: float = 100
@@ -32,7 +32,7 @@ var cur_slope: String = "FLAT"
 	"GRADUAL": [0.80, 0.85, 0.85, false],
 	"NORMAL": [0.70, 0.75, 0.75, false],
 	"STEEP": [0.55, 0.60, 0.60, true],
-	"VERY STEEP": [0.175, 0.35, 0.35, true]
+	"VERY STEEP": [0.175, 0.6, 0.35, true]
 }
 
 var s_meter: float = 0
@@ -58,6 +58,7 @@ var is_big: bool = false
 @export var sprite: AnimatedSprite2D
 @onready var anim: AnimationPlayer = sprite.get_child(0)
 @export var jump_buffer_timer: Timer
+@export var audio_player: AudioPlayer
 
 func _ready() -> void:
 	assert(sprite and sprite.get_parent() is Player, "У игрока на сцене {path} не определен спрайт".format({"path": self.get_parent().name}))
@@ -155,8 +156,11 @@ func handle_animator():
 					else:
 						set_animation("Fall")
 				
-	if (abs(velocity).x > 0):
-		anim.speed_scale = (abs(velocity.x) * (walk_max_speed / 16)) / 250
+	if not in_spinjump:
+		if (abs(velocity).x > 0):
+			anim.speed_scale = (abs(velocity.x) * (walk_max_speed / 16)) / 250
+		else:
+			anim.speed_scale = 1
 	else:
 		anim.speed_scale = 1
 
@@ -203,7 +207,7 @@ func horizontal_move(delta: float):
 				deceleration /= slopes_moddifs.get(cur_slope)[2]
 
 		if moveDirectionX != 0 and sign(moveDirectionX) != sign(velocity.x):
-			velocity.x = move_toward(velocity.x, target_speed, (acceleration + deceleration / 4) * delta)
+			velocity.x = move_toward(velocity.x, target_speed, (acceleration + deceleration) * delta)
 		else:
 			if moveDirectionX != 0:
 				velocity.x = move_toward(velocity.x, target_speed, acceleration * delta)
@@ -225,6 +229,7 @@ func jump():
 	if (jumpKey_pressed and not spinjumpKey_pressed) and is_on_floor() and (not downKey):
 		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
 		in_spinjump = false
+		audio_player.play_sound("Jump")
 
 	if Input.is_action_just_released("Jump") and not in_spinjump:
 		if velocity.y < -min_jump_height:
@@ -233,6 +238,7 @@ func jump():
 	if (spinjumpKey_pressed and not jumpKey_pressed) and is_on_floor() and (not downKey):
 		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
 		set_deferred("in_spinjump", true)
+		audio_player.play_sound("Jump")
 
 	if Input.is_action_just_released("SpinJump") and in_spinjump:
 		if velocity.y < -min_jump_height:
@@ -252,6 +258,7 @@ func buffer_jump():
 		jump_buffer_timer.start(buffer_time)
 	if jump_buffer_timer.time_left > 0 and is_on_floor():
 		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
+		audio_player.play_sound("Jump")
 
 func handle_slopes():
 	var angle: float = get_floor_angle()

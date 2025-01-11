@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://dl8f1lg1kaa3u"]
+
+[ext_resource type="Script" path="res://scripts/audio.gd" id="1_lricu"]
+[ext_resource type="AudioStream" uid="uid://ilckbqhf04yv" path="res://sounds/SpinJump.wav" id="2_xoswb"]
+[ext_resource type="AudioStream" uid="uid://cuf1d55xw34fq" path="res://sounds/Jump.wav" id="3_8e7tu"]
+[ext_resource type="AudioStream" uid="uid://bf8nv0j17wugo" path="res://music/Underworld.wav" id="4_fnvdc"]
+
+[node name="AudioPlayer" type="Node" node_paths=PackedStringArray("sound_list", "music_list")]
+script = ExtResource("1_lricu")
+sound_list = [NodePath("Jump"), NodePath("SpinJump")]
+music_list = [NodePath("Underground")]
+
+[node name="SpinJump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_xoswb")
+
+[node name="Jump" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_8e7tu")
+
+[node name="Underground" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_fnvdc")
+autoplay = true
