@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://cqbyw8xqw8sxk"]
+
+[ext_resource type="Texture2D" uid="uid://c1mx13pti4abu" path="res://assets/backgrounds/Underground/bg_Underground_back.png" id="1_xdsdh"]
+[ext_resource type="Texture2D" uid="uid://c70tptwjawsi8" path="res://assets/backgrounds/Underground/bg_Underground_front.png" id="2_uce22"]
+
+[node name="BgUnderground" type="Node2D"]
+
+[node name="Back" type="Parallax2D" parent="."]
+scale = Vector2(0.8, 0.8)
+scroll_scale = Vector2(0.05, 0.05)
+scroll_offset = Vector2(536, 339)
+
+[node name="Sprite2D" type="Sprite2D" parent="Back"]
+texture = ExtResource("1_xdsdh")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Back"]
+position = Vector2(511.25, 0)
+texture = ExtResource("1_xdsdh")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Back"]
+position = Vector2(-511.25, 0)
+texture = ExtResource("1_xdsdh")
+
+[node name="Front" type="Parallax2D" parent="."]
+scale = Vector2(0.8, 0.8)
+scroll_scale = Vector2(0.1, 0.1)
+scroll_offset = Vector2(530, 335)
+
+[node name="Sprite2D" type="Sprite2D" parent="Front"]
+texture = ExtResource("2_uce22")
+
+[node name="Sprite2D2" type="Sprite2D" parent="Front"]
+position = Vector2(511.25, 0)
+texture = ExtResource("2_uce22")
+
+[node name="Sprite2D3" type="Sprite2D" parent="Front"]
+position = Vector2(-511.25, -7.15256e-07)
+texture = ExtResource("2_uce22")

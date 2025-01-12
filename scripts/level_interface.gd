@@ -5,7 +5,7 @@ extends Control
 @onready var timer_label:Label = $SecoundContainer/TimerContainer/TimerLabel
 @onready var score_label:Label = $SecoundContainer/ScoreLabel
 
-var time:float = 500
+var time:float = 501
 var visual_score:int = 0
 
 func _process(delta: float) -> void:
