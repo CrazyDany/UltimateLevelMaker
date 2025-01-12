@@ -227,18 +227,16 @@ func horizontal_move(delta: float):
 
 func jump():
 	if (jumpKey_pressed and not spinjumpKey_pressed) and is_on_floor() and (not downKey):
-		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
+		do_jump(false)
 		in_spinjump = false
-		audio_player.play_sound("Jump")
 
 	if Input.is_action_just_released("Jump") and not in_spinjump:
 		if velocity.y < -min_jump_height:
 			velocity.y = -min_jump_height
 
 	if (spinjumpKey_pressed and not jumpKey_pressed) and is_on_floor() and (not downKey):
-		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
+		do_jump(true)
 		set_deferred("in_spinjump", true)
-		audio_player.play_sound("Jump")
 
 	if Input.is_action_just_released("SpinJump") and in_spinjump:
 		if velocity.y < -min_jump_height:
@@ -257,7 +255,7 @@ func buffer_jump():
 	if jumpKey_pressed and not is_on_floor():
 		jump_buffer_timer.start(buffer_time)
 	if jump_buffer_timer.time_left > 0 and is_on_floor():
-		velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
+		do_jump(false)
 		audio_player.play_sound("Jump")
 
 func handle_slopes():
@@ -296,3 +294,11 @@ func hurt(actor:Node) -> void:
 		return
 	else:
 		velocity.y -= 300
+	
+#И деланье прыжка и его звук
+func do_jump(spin_jump:bool) -> void:
+	velocity.y = -sqrt(max_jump_height * 2 * get_gravity().y) - abs(velocity.x / 3)
+	if spin_jump:
+		audio_player.play_sound("SpinJump")
+	else:
+		audio_player.play_sound("Jump")

@@ -150,7 +150,3 @@ offset_left = 10.0
 offset_right = 10.0
 picked_player = NodePath("../../..")
 metadata/_edit_use_anchors_ = true
-
-[connection signal="body_entered" from="Tiles/TileLayer/BrickBlock" to="Tiles/TileLayer/BrickBlock" method="_on_body_entered"]
-[connection signal="body_entered" from="Tiles/TileLayer/@RigidBody2D@27266" to="Tiles/TileLayer/@RigidBody2D@27266" method="_on_body_entered"]
-[connection signal="body_entered" from="Tiles/TileLayer/@RigidBody2D@27267" to="Tiles/TileLayer/@RigidBody2D@27267" method="_on_body_entered"]

@@ -8,6 +8,7 @@ var matched:bool = false
 func _on_matched(player: Player):
 	player.coins+= 1
 	player.score+= 100
+	player.audio_player.play_sound("Coin")
 	
 	if not matched:
 		var effect_scene = preload("res://nodes/effects/glosses_effect.tscn")
